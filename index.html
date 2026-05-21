@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velvet Brew Café | Specialty Coffee & Pastries</title>
+    <meta name="description" content="Savor premium specialty coffee, artisan baked goods, and desserts at Velvet Brew Café. Cozy space, fast global checkout, and customizable drinks.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="#" class="logo" id="header-logo">
+                <span class="logo-accent">Velvet</span> Brew
+            </a>
+            <nav class="nav" aria-label="Main Navigation">
+                <a href="#hero" class="nav-link active">Home</a>
+                <a href="#features" class="nav-link">About</a>
+                <a href="#menu" class="nav-link">Menu</a>
+                <a href="#locations" class="nav-link">Locations</a>
+                <a href="#footer" class="nav-link">Contact</a>
+            </nav>
+            <div class="header-actions">
+                <button class="theme-toggle" id="theme-toggle-btn" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button class="cart-btn" id="cart-toggle-btn" aria-label="Open Shopping Cart">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="cart-badge" id="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero">
+            <div class="hero-overlay"></div>
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <span class="hero-subtitle">Specialty Coffee Network</span>
+                    <h1 class="hero-title">Crafting Coffee, Inspiring Mornings</h1>
+                    <p class="hero-description">Connecting Europe and North America through small-batch roasted specialty coffee, artisan pastries, and warm minimalist spaces.</p>
+                    <div class="hero-buttons">
+                        <a href="#menu" class="btn btn-primary">Order Now</a>
+                        <a href="#locations" class="btn btn-secondary">Explore Locations</a>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-scroll-indicator">
+                <span class="mouse-scroll"></span>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">The Velvet Brew Standards</h2>
+                    <p class="section-subtitle">Attention to detail from bean sourcing to your first sip</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fa-solid fa-mug-hot"></i>
+                        </div>
+                        <h3>Specialty Beans</h3>
+                        <p>100% single-origin Arabica, sourced ethically and roasted weekly for optimal fruitiness and body.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                        <h3>Plant-Based Friendly</h3>
+                        <p>Organic cow milk and house-crafted oat, almond, and coconut alternative milks.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <i class="fa-solid fa-kitchen-set"></i>
+                        </div>
+                        <h3>In-House Bakery</h3>
+                        <p>Butter croissants and signature fruit tarts baked fresh on-site every morning.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Section -->
+        <section id="menu" class="menu-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Our Menu</h2>
+                    <p class="section-subtitle">Select and fully customize your favorite craft drinks and bakery items</p>
+                </div>
+
+                <!-- Menu Controls -->
+                <div class="menu-controls">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="menu-search" placeholder="Search coffee, tea, pastries...">
+                    </div>
+                    <div class="filter-tabs" id="filter-tabs">
+                        <button class="filter-tab active" data-category="all">All</button>
+                        <button class="filter-tab" data-category="drinks">Drinks</button>
+                        <button class="filter-tab" data-category="bakery">Bakery</button>
+                        <button class="filter-tab" data-category="desserts">Desserts</button>
+                    </div>
+                </div>
+
+                <!-- Menu Grid -->
+                <div class="menu-grid" id="menu-grid">
+                    <!-- Rendered dynamically in app.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Global Locations Network -->
+        <section id="locations" class="locations-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Our Global Network</h2>
+                    <p class="section-subtitle">From cozy spots in London to coffee labs in Los Angeles</p>
+                </div>
+                <div class="locations-grid">
+                    <div class="location-info-card">
+                        <h3>Europe</h3>
+                        <div class="location-item">
+                            <div class="loc-bullet"></div>
+                            <div>
+                                <strong>London, Soho</strong>
+                                <p>42 Wardour St, Soho, London W1D 6PX</p>
+                            </div>
+                        </div>
+                        <div class="location-item">
+                            <div class="loc-bullet"></div>
+                            <div>
+                                <strong>Paris, Le Marais</strong>
+                                <p>18 Rue des Rosiers, 75004 Paris</p>
+                            </div>
+                        </div>
+                        <div class="location-item">
+                            <div class="loc-bullet"></div>
+                            <div>
+                                <strong>Berlin, Mitte</strong>
+                                <p>Rosenthaler Str. 36, 10178 Berlin</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="location-info-card">
+                        <h3>North America</h3>
+                        <div class="location-item">
+                            <div class="loc-bullet"></div>
+                            <div>
+                                <strong>New York, SoHo</strong>
+                                <p>120 Prince St, New York, NY 10012</p>
+                            </div>
+                        </div>
+                        <div class="location-item">
+                            <div class="loc-bullet"></div>
+                            <div>
+                                <strong>Los Angeles, Venice</strong>
+                                <p>1600 Boardwalk, Venice, CA 90291</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="globe-intro-banner">
+                    <div class="globe-intro-text">
+                        <h4>Order Online and Pick Up Anywhere</h4>
+                        <p>Using our dynamic checkout, select your nearest European or American outlet on our interactive 3D Globe for immediate in-shop dining or priority takeaway.</p>
+                    </div>
+                    <i class="fa-solid fa-earth-americas globe-intro-icon"></i>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Slide-out Cart Drawer -->
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-drawer-backdrop" id="cart-drawer-backdrop"></div>
+        <div class="cart-drawer-content">
+            <div class="cart-drawer-header">
+                <h3>Your Order</h3>
+                <button class="cart-close-btn" id="cart-close-btn" aria-label="Close Shopping Cart">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="cart-items" id="cart-items-container">
+                <!-- Dynamic rendering in app.js -->
+                <div class="empty-cart-message">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <p>Your basket is currently empty</p>
+                    <a href="#menu" class="btn btn-primary btn-sm" id="empty-cart-cta">View Our Menu</a>
+                </div>
+            </div>
+
+            <div class="cart-drawer-footer" id="cart-drawer-footer">
+                <div class="cart-summary-row">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal">€0.00</span>
+                </div>
+                <div class="cart-summary-row">
+                    <span>Service / Local Tax</span>
+                    <span id="cart-tax">€0.00</span>
+                </div>
+                <hr class="summary-divider">
+                <div class="cart-summary-row total-row">
+                    <span>Total</span>
+                    <span id="cart-total">€0.00</span>
+                </div>
+                <button class="btn btn-primary w-100" id="checkout-btn">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Customizer Modal -->
+    <div class="modal-overlay" id="customizer-modal">
+        <div class="modal-container customizer-modal-container">
+            <button class="modal-close-btn" id="customizer-close-btn" aria-label="Close Configuration">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="customizer-grid">
+                <div class="customizer-preview">
+                    <div class="customizer-img-wrapper">
+                        <img src="" alt="" id="customizer-img">
+                    </div>
+                    <h3 id="customizer-title">Drink Name</h3>
+                    <p id="customizer-desc" class="customizer-description">Drink description</p>
+                </div>
+                <div class="customizer-options-panel">
+                    <form id="customizer-form">
+                        <div class="customizer-section" id="option-size">
+                            <h4>Size Option</h4>
+                            <div class="option-chips">
+                                <label class="chip-label">
+                                    <input type="radio" name="size" value="S" checked>
+                                    <span class="chip-text">Small (8 oz)</span>
+                                </label>
+                                <label class="chip-label">
+                                    <input type="radio" name="size" value="M">
+                                    <span class="chip-text">Medium (12 oz) <span class="chip-price">+€0.50</span></span>
+                                </label>
+                                <label class="chip-label">
+                                    <input type="radio" name="size" value="L">
+                                    <span class="chip-text">Large (16 oz) <span class="chip-price">+€1.00</span></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="customizer-section" id="option-milk">
+                            <h4>Milk Option</h4>
+                            <div class="option-chips">
+                                <label class="chip-label">
+                                    <input type="radio" name="milk" value="standard" checked>
+                                    <span class="chip-text">Whole Milk</span>
+                                </label>
+                                <label class="chip-label">
+                                    <input type="radio" name="milk" value="oat">
+                                    <span class="chip-text">Oat Milk <span class="chip-price">+€0.60</span></span>
+                                </label>
+                                <label class="chip-label">
+                                    <input type="radio" name="milk" value="almond">
+                                    <span class="chip-text">Almond Milk <span class="chip-price">+€0.70</span></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="customizer-section" id="option-sweet">
+                            <h4>Sweetness Level</h4>
+                            <div class="option-slider-wrapper">
+                                <div class="slider-labels">
+                                    <span>Unsweetened</span>
+                                    <span>Medium</span>
+                                    <span>Sweet</span>
+                                </div>
+                                <input type="range" name="sweetness" min="0" max="2" value="1" class="customizer-range">
+                            </div>
+                        </div>
+
+                        <div class="customizer-section" id="option-addons">
+                            <h4>Add-ons</h4>
+                            <div class="option-checkboxes">
+                                <label class="check-label">
+                                    <input type="checkbox" name="addons" value="extra_shot">
+                                    <span class="check-box"><i class="fa-solid fa-check"></i></span>
+                                    <span class="check-text">Extra Espresso Shot (+€0.80)</span>
+                                </label>
+                                <label class="check-label">
+                                    <input type="checkbox" name="addons" value="syrup">
+                                    <span class="check-box"><i class="fa-solid fa-check"></i></span>
+                                    <span class="check-text">Organic Caramel Syrup (+€0.50)</span>
+                                </label>
+                                <label class="check-label">
+                                    <input type="checkbox" name="addons" value="marshmallow">
+                                    <span class="check-box"><i class="fa-solid fa-check"></i></span>
+                                    <span class="check-text">Mini Marshmallows (+€0.50)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="customizer-footer">
+                        <div class="customizer-total-price">
+                            <span>Price:</span>
+                            <span id="customizer-price-display">€2.50</span>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="add-to-cart-submit">Add to Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Flow Modal (4-step Process) -->
+    <div class="modal-overlay" id="checkout-modal">
+        <div class="modal-container checkout-modal-container">
+            <button class="modal-close-btn" id="checkout-close-btn" aria-label="Close Checkout">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <!-- Progress Tracker -->
+            <div class="checkout-progress">
+                <div class="progress-step active" id="step-dot-1">
+                    <span class="step-num">1</span>
+                    <span class="step-label">Location</span>
+                </div>
+                <div class="progress-line" id="line-1"></div>
+                <div class="progress-step" id="step-dot-2">
+                    <span class="step-num">2</span>
+                    <span class="step-label">Details</span>
+                </div>
+                <div class="progress-line" id="line-2"></div>
+                <div class="progress-step" id="step-dot-3">
+                    <span class="step-num">3</span>
+                    <span class="step-label">Payment</span>
+                </div>
+                <div class="progress-line" id="line-3"></div>
+                <div class="progress-step" id="step-dot-4">
+                    <span class="step-num">4</span>
+                    <span class="step-label">Done</span>
+                </div>
+            </div>
+
+            <!-- STEP 1: Interactive 3D Globe Location Select -->
+            <div class="checkout-step-content active" id="checkout-step-1">
+                <h3 class="step-title">Select Pickup Shop</h3>
+                
+                <div class="location-view-toggles">
+                    <button class="toggle-view-btn active" id="toggle-globe-view">
+                        <i class="fa-solid fa-earth-americas"></i> 3D Globe Planet
+                    </button>
+                    <button class="toggle-view-btn" id="toggle-list-view">
+                        <i class="fa-solid fa-list-ul"></i> Classic List
+                    </button>
+                </div>
+
+                <!-- 3D Globe Container -->
+                <div class="globe-selector-panel" id="globe-selector-panel">
+                    <div class="globe-canvas-wrapper">
+                        <canvas id="globe-canvas"></canvas>
+                        <div class="globe-drag-hint">
+                            <i class="fa-solid fa-arrows-spin"></i> Click & Drag to Spin the Planet
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Classic Dropdown Select Panel -->
+                <div class="list-selector-panel hidden" id="list-selector-panel">
+                    <div class="form-group">
+                        <label for="location-dropdown" class="form-label">Select Café Outlet</label>
+                        <select id="location-dropdown" class="form-select">
+                            <option value="" disabled selected>Choose a city...</option>
+                            <optgroup label="Europe">
+                                <option value="london">London, Soho (United Kingdom)</option>
+                                <option value="paris">Paris, Le Marais (France)</option>
+                                <option value="berlin">Berlin, Mitte (Germany)</option>
+                            </optgroup>
+                            <optgroup label="North America">
+                                <option value="newyork">New York, SoHo (United States)</option>
+                                <option value="losangeles">Los Angeles, Venice (United States)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Selected Address Details Card -->
+                <div class="selected-location-card" id="selected-location-card">
+                    <div class="card-empty-state" id="card-empty-state">
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                        <p>Hover and click a glowing pin on the planet, or choose from list to select shop location</p>
+                    </div>
+                    <div class="card-active-state hidden" id="card-active-state">
+                        <div class="location-details-header">
+                            <h4 id="selected-loc-name">London, Soho</h4>
+                            <span class="location-badge" id="selected-loc-region">Europe</span>
+                        </div>
+                        <p id="selected-loc-address" class="location-address">42 Wardour St, Soho, London W1D 6PX</p>
+                        <div class="location-meta-row">
+                            <span><i class="fa-regular fa-clock"></i> 08:00 AM - 10:00 PM</span>
+                            <span><i class="fa-solid fa-circle-check"></i> Online Ordering Active</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkout-step-footer">
+                    <button class="btn btn-secondary modal-cancel-btn">Cancel</button>
+                    <button class="btn btn-primary" id="step-1-next">Continue</button>
+                </div>
+            </div>
+
+            <!-- STEP 2: Service Info & Dining Preference -->
+            <div class="checkout-step-content" id="checkout-step-2">
+                <h3 class="step-title">How would you like to receive your order?</h3>
+                <div class="order-type-selection">
+                    <label class="order-type-card">
+                        <input type="radio" name="order-type" value="dinein" checked>
+                        <div class="card-ui-content">
+                            <i class="fa-solid fa-chair"></i>
+                            <span class="type-name">Dine-in</span>
+                            <span class="type-desc">Served directly to your table</span>
+                        </div>
+                    </label>
+                    <label class="order-type-card">
+                        <input type="radio" name="order-type" value="takeaway">
+                        <div class="card-ui-content">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                            <span class="type-name">Takeaway</span>
+                            <span class="type-desc">Ready at the pickup counter</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="dinein-details" id="dinein-details-container">
+                    <label for="table-number" class="form-label">Table Number</label>
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-hashtag input-icon"></i>
+                        <input type="number" id="table-number" min="1" max="50" placeholder="e.g. 15">
+                    </div>
+                    <span class="form-hint">Find the table number printed on the gold plate on your table</span>
+                </div>
+
+                <div class="user-details-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="user-name" class="form-label">Your Name</label>
+                            <input type="text" id="user-name" required placeholder="Alex Smirnov">
+                        </div>
+                        <div class="form-group">
+                            <label for="user-phone" class="form-label">Mobile Number</label>
+                            <input type="tel" id="user-phone" placeholder="+1 (555) 019-2834">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkout-step-footer">
+                    <button class="btn btn-secondary" id="step-2-prev">Back</button>
+                    <button class="btn btn-primary" id="step-2-next">Continue</button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Payment Method & 3D Rotating Credit Card -->
+            <div class="checkout-step-content" id="checkout-step-3">
+                <h3 class="step-title">Secure Checkout</h3>
+                
+                <div class="payment-methods-tabs">
+                    <button class="payment-tab active" id="pay-method-card">
+                        <i class="fa-regular fa-credit-card"></i>
+                        Credit/Debit Card
+                    </button>
+                    <button class="payment-tab" id="pay-method-fast">
+                        <i class="fa-brands fa-apple"></i> / <i class="fa-brands fa-google"></i>
+                        Express Checkout
+                    </button>
+                </div>
+
+                <!-- Google Pay / Apple Pay Mock Panel -->
+                <div class="fast-pay-panel hidden" id="fast-pay-panel">
+                    <div class="fast-pay-buttons">
+                        <button type="button" class="gpay-btn btn-gpay-g" id="mock-gpay-trigger">
+                            <span class="gpay-logo-span">Pay with Google</span>
+                        </button>
+                        <button type="button" class="apple-pay-btn" id="mock-applepay-trigger">
+                            <i class="fa-brands fa-apple"></i> Pay
+                        </button>
+                    </div>
+                    <p class="fast-pay-secure-hint"><i class="fa-solid fa-lock"></i> Bank-grade end-to-end encrypted connection</p>
+                </div>
+
+                <!-- Credit Card Interactive Block -->
+                <div class="card-payment-panel" id="card-payment-panel">
+                    <!-- The Interactive 3D Card Container -->
+                    <div class="credit-card-container">
+                        <div class="credit-card" id="credit-card">
+                            <!-- Front of Card -->
+                            <div class="card-face card-front">
+                                <div class="card-front-top">
+                                    <div class="card-chip"></div>
+                                    <div class="card-type-logo"><i class="fa-brands fa-cc-visa"></i></div>
+                                </div>
+                                <div class="card-number-display" id="card-number-display">•••• •••• •••• ••••</div>
+                                <div class="card-front-bottom">
+                                    <div class="card-holder-group">
+                                        <span class="card-label">Card Holder</span>
+                                        <span class="card-value-display" id="card-holder-display">CARDHOLDER NAME</span>
+                                    </div>
+                                    <div class="card-expiry-group">
+                                        <span class="card-label">Expires</span>
+                                        <span class="card-value-display" id="card-expiry-display">MM/YY</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Back of Card -->
+                            <div class="card-face card-back">
+                                <div class="card-magnetic-strip"></div>
+                                <div class="card-signature-bar">
+                                    <span class="card-signature-sample">Velvet Brew Cafe</span>
+                                    <div class="card-cvv-display" id="card-cvv-display">•••</div>
+                                </div>
+                                <div class="card-back-text">
+                                    Exclusive Velvet Coffee Club. Authorized signature required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Credit Card Input Form -->
+                    <form class="credit-card-form" id="credit-card-form">
+                        <div class="form-group">
+                            <label for="input-card-number" class="form-label">Card Number</label>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-credit-card input-icon"></i>
+                                <input type="text" id="input-card-number" maxlength="19" placeholder="0000 0000 0000 0000" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-card-holder" class="form-label">Name on Card</label>
+                            <input type="text" id="input-card-holder" placeholder="ALEX SMIRNOV" required style="text-transform: uppercase;">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="input-card-expiry" class="form-label">Expiry Date</label>
+                                <input type="text" id="input-card-expiry" maxlength="5" placeholder="MM/YY" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="input-card-cvv" class="form-label">CVV / CVC</label>
+                                <input type="password" id="input-card-cvv" maxlength="3" placeholder="***" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="checkout-step-footer">
+                    <button class="btn btn-secondary" id="step-3-prev">Back</button>
+                    <button class="btn btn-primary" id="step-3-pay-btn">Pay <span id="pay-button-amount">€0.00</span></button>
+                </div>
+            </div>
+
+            <!-- STEP 4: Success Receipt Rollout -->
+            <div class="checkout-step-content" id="checkout-step-4">
+                <div class="success-screen">
+                    <div class="success-checkmark-wrapper">
+                        <svg class="checkmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                            <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                            <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                        </svg>
+                    </div>
+                    <h3 class="success-title">Order Paid Successfully!</h3>
+                    <p class="success-message">Our barista has received your ticket and is preparing your cup.</p>
+
+                    <!-- Animated Receipt -->
+                    <div class="receipt-container" id="receipt-container">
+                        <div class="receipt-paper">
+                            <div class="receipt-header">
+                                <h4>VELVET BREW CAFÉ</h4>
+                                <p id="receipt-outlet-address">42 Wardour St, Soho, London</p>
+                                <p class="receipt-time" id="receipt-time">21.05.2026 14:15</p>
+                                <div class="receipt-order-id">ORDER ID: #<span id="receipt-order-number">0342</span></div>
+                            </div>
+                            
+                            <div class="receipt-divider"></div>
+                            
+                            <div class="receipt-details" id="receipt-items-list">
+                                <!-- Generated list items -->
+                            </div>
+                            
+                            <div class="receipt-divider"></div>
+                            
+                            <div class="receipt-summary">
+                                <div class="receipt-row">
+                                    <span>Type:</span>
+                                    <span id="receipt-order-type">Dine-in (Table #15)</span>
+                                </div>
+                                <div class="receipt-row">
+                                    <span>Payment:</span>
+                                    <span id="receipt-pay-method">Credit Card</span>
+                                </div>
+                                <div class="receipt-row total-receipt-row">
+                                    <span>TOTAL:</span>
+                                    <span id="receipt-total-amount">€3.50</span>
+                                </div>
+                            </div>
+                            
+                            <div class="receipt-barcode">
+                                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                            </div>
+                            <div class="receipt-thankyou">
+                                Thank you for your support!
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" id="checkout-finish-btn">Close Receipt</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Contact & Footer -->
+    <footer id="footer" class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="logo footer-logo">
+                    <span class="logo-accent">Velvet</span> Brew
+                </a>
+                <p>Establishing places where high-end craft roasting meets effortless architectural minimalist comfort.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Telegram Channel"><i class="fa-brands fa-telegram"></i></a>
+                    <a href="#" aria-label="Instagram Page"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube Channel"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#features">About</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#locations">Locations</a></li>
+                </ul>
+            </div>
+            <div class="footer-hours">
+                <h4>Opening Hours</h4>
+                <ul>
+                    <li>Monday - Friday: 08:00 AM - 10:00 PM</li>
+                    <li>Saturday - Sunday: 09:00 AM - 11:00 PM</li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><i class="fa-solid fa-location-dot"></i> London, Paris, Berlin, NY, LA</li>
+                    <li><i class="fa-solid fa-phone"></i> +44 (20) 7946 0958</li>
+                    <li><i class="fa-solid fa-envelope"></i> hello@velvetbrew.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container footer-bottom-content">
+                <p>&copy; 2026 Velvet Brew Café Group. All rights reserved.</p>
+                <p>Made with love & organic milk</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Three.js Library from CDN for 3D Globe Render -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Main JavaScript File -->
+    <script src="app.js"></script>
+</body>
+</html>
