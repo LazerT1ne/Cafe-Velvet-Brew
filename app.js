@@ -171,11 +171,31 @@ const LOCATIONS = {
     }
 };
 
+// Loader screen quotes
+const LOADER_QUOTES = [
+    "Grinding single-origin Arabica...",
+    "Brewing double espresso shot...",
+    "Frothing organic oat milk...",
+    "Tempering flaky butter croissants...",
+    "Preparing the perfect coffee pour...",
+    "Sourcing ethically-farmed beans...",
+    "Heating up the espresso machine..."
+];
+
+// SPA Routing Configurations
+const ROUTES = {
+    '#/home': 'page-home',
+    '#/menu': 'page-menu',
+    '#/auth': 'page-auth',
+    '#/history': 'page-history'
+};
+
 // Global App State
 let cart = [];
 let selectedItem = null;
 let currentCustomPrice = 0;
 let selectedLocation = null;
+let currentUser = null;
 
 // Page elements
 const menuGrid = document.getElementById('menu-grid');
@@ -215,8 +235,10 @@ let isGlobeInitialized = false;
 // Initialize Web App
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
+    initUserSession();
     renderMenu(MENU_ITEMS);
     setupEventListeners();
+    setupRouter();
     updateCartUI();
 });
 
@@ -248,8 +270,18 @@ function toggleTheme() {
     }, 500);
 }
 
+// User Session Loading
+function initUserSession() {
+    const savedUser = localStorage.getItem('current_user');
+    if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+    }
+    updateProfileWidget();
+}
+
 // Render Menu Cards (default base currency: EUR €)
 function renderMenu(items) {
+    if (!menuGrid) return;
     menuGrid.innerHTML = '';
     if (items.length === 0) {
         menuGrid.innerHTML = `
@@ -296,34 +328,40 @@ function setupEventListeners() {
     document.getElementById('theme-toggle-btn').addEventListener('click', toggleTheme);
 
     // Search query input
-    searchInput.addEventListener('input', () => {
-        filterAndSearchMenu();
-    });
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            filterAndSearchMenu();
+        });
+    }
 
     // Category Tabs click
-    filterTabs.addEventListener('click', (e) => {
-        if (e.target.classList.contains('filter-tab')) {
-            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
-            e.target.classList.add('active');
-            filterAndSearchMenu();
-        }
-    });
+    if (filterTabs) {
+        filterTabs.addEventListener('click', (e) => {
+            if (e.target.classList.contains('filter-tab')) {
+                document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+                e.target.classList.add('active');
+                filterAndSearchMenu();
+            }
+        });
+    }
 
     // Menu Item Add Click
-    menuGrid.addEventListener('click', (e) => {
-        const addBtn = e.target.closest('.menu-card-btn');
-        if (addBtn) {
-            const itemId = addBtn.dataset.id;
-            const item = MENU_ITEMS.find(i => i.id === itemId);
-            if (item) {
-                if (item.customizable) {
-                    openCustomizer(item);
-                } else {
-                    addToCartDirectly(item, addBtn);
+    if (menuGrid) {
+        menuGrid.addEventListener('click', (e) => {
+            const addBtn = e.target.closest('.menu-card-btn');
+            if (addBtn) {
+                const itemId = addBtn.dataset.id;
+                const item = MENU_ITEMS.find(i => i.id === itemId);
+                if (item) {
+                    if (item.customizable) {
+                        openCustomizer(item);
+                    } else {
+                        addToCartDirectly(item, addBtn);
+                    }
                 }
             }
-        }
-    });
+        });
+    }
 
     // Cart Drawer Toggle binds
     cartToggleBtn.addEventListener('click', () => toggleCartDrawer(true));
@@ -366,11 +404,17 @@ function setupEventListeners() {
 
     // Setup checkout routing step switches
     setupCheckoutNavigation();
+
+    // Setup Auth card animations and callbacks
+    setupAuthListeners();
 }
 
-// Highlight Navigation links on Scroll
+// Highlight Navigation links on Scroll (Only active on Home Page)
 function highlightActiveNavLink() {
-    const sections = ['hero', 'features', 'menu', 'locations', 'footer'];
+    const activePage = document.querySelector('.spa-page.active');
+    if (!activePage || activePage.id !== 'page-home') return;
+
+    const sections = ['hero', 'features', 'locations'];
     const scrollPos = window.scrollY + 200;
 
     sections.forEach(id => {
@@ -381,7 +425,9 @@ function highlightActiveNavLink() {
             if (scrollPos >= top && scrollPos < top + height) {
                 document.querySelectorAll('.nav-link').forEach(link => {
                     link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${id}`) {
+                    const linkScroll = link.dataset.scroll;
+                    const linkPage = link.dataset.page;
+                    if (linkPage === 'home' && (!linkScroll && id === 'hero' || linkScroll === id)) {
                         link.classList.add('active');
                     }
                 });
@@ -600,7 +646,7 @@ function updateCartUI() {
             <div class="empty-cart-message">
                 <i class="fa-solid fa-basket-shopping"></i>
                 <p>Your basket is currently empty</p>
-                <a href="#menu" class="btn btn-primary btn-sm" id="empty-cart-cta">View Our Menu</a>
+                <a href="#/menu" class="btn btn-primary btn-sm" id="empty-cart-cta">View Our Menu</a>
             </div>
         `;
         cartDrawerFooter.style.display = 'none';
@@ -616,17 +662,17 @@ function updateCartUI() {
             itemEl.innerHTML = `
                 <img src="${item.image}" alt="${item.name}" class="cart-item-img">
                 <div class="cart-item-details">
-                    <h4 class="cart-item-title">${item.name}</h4>
-                    <p class="cart-item-meta">${item.customText}</p>
-                    <p class="cart-item-price">€${item.price.toFixed(2)}</p>
-                    <div class="cart-item-actions">
-                        <div class="quantity-control">
-                            <button class="quantity-btn dec-btn" data-uid="${item.uniqueId}">-</button>
-                            <span class="quantity-val">${item.quantity}</span>
-                            <button class="quantity-btn inc-btn" data-uid="${item.uniqueId}">+</button>
-                        </div>
-                        <button class="cart-item-delete" data-uid="${item.uniqueId}" aria-label="Remove"><i class="fa-regular fa-trash-can"></i></button>
-                    </div>
+                     <h4 class="cart-item-title">${item.name}</h4>
+                     <p class="cart-item-meta">${item.customText}</p>
+                     <p class="cart-item-price">€${item.price.toFixed(2)}</p>
+                     <div class="cart-item-actions">
+                         <div class="quantity-control">
+                             <button class="quantity-btn dec-btn" data-uid="${item.uniqueId}">-</button>
+                             <span class="quantity-val">${item.quantity}</span>
+                             <button class="quantity-btn inc-btn" data-uid="${item.uniqueId}">+</button>
+                         </div>
+                         <button class="cart-item-delete" data-uid="${item.uniqueId}" aria-label="Remove"><i class="fa-regular fa-trash-can"></i></button>
+                     </div>
                 </div>
             `;
             cartItemsContainer.appendChild(itemEl);
@@ -747,6 +793,8 @@ function setupInteractiveCreditCard() {
     const cExpiryDisplay = document.getElementById('card-expiry-display');
     const cCvvDisplay = document.getElementById('card-cvv-display');
 
+    if (!cCvvInput) return;
+
     cCvvInput.addEventListener('focus', () => {
         cardEl.classList.add('flipped');
     });
@@ -806,7 +854,11 @@ function setupInteractiveCreditCard() {
 function openCheckoutWizard() {
     showCheckoutStep(1);
     
-    document.getElementById('user-name').value = localStorage.getItem('user_name') || '';
+    if (currentUser) {
+        document.getElementById('user-name').value = currentUser.name;
+    } else {
+        document.getElementById('user-name').value = localStorage.getItem('user_name') || '';
+    }
     document.getElementById('user-phone').value = localStorage.getItem('user_phone') || '';
     document.getElementById('table-number').value = '';
     
@@ -1034,7 +1086,7 @@ function performMockPayment(methodName) {
     }, 1800);
 }
 
-// Generate printable receipt with currency convert computations
+// Generate printable receipt with currency convert computations & Save to order history
 function generateReceipt(paymentMethod) {
     const orderNumber = Math.floor(100 + Math.random() * 900);
     const orderTypeVal = document.querySelector('input[name="order-type"]:checked').value;
@@ -1065,6 +1117,7 @@ function generateReceipt(paymentMethod) {
     
     const rate = selectedLocation.rate;
     const symbol = selectedLocation.symbol;
+    const totalConverted = getConvertedCartTotal(selectedLocation);
 
     cart.forEach(item => {
         const itemEl = document.createElement('div');
@@ -1082,8 +1135,29 @@ function generateReceipt(paymentMethod) {
         listContainer.appendChild(itemEl);
     });
 
-    const totalConverted = getConvertedCartTotal(selectedLocation);
     document.getElementById('receipt-total-amount').textContent = `${symbol}${totalConverted.toFixed(2)}`;
+
+    // Compile and Save Order History
+    const historyOrder = {
+        id: '#' + orderNumber,
+        date: `${dateStr} ${timeStr}`,
+        locationName: selectedLocation.name,
+        locationAddress: selectedLocation.address,
+        symbol: symbol,
+        total: totalConverted,
+        type: orderTypeDisplay,
+        cartBackup: JSON.parse(JSON.stringify(cart)), // raw backup for reordering
+        items: cart.map(item => ({
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price * rate,
+            customText: item.customText
+        }))
+    };
+
+    let history = JSON.parse(localStorage.getItem('order_history')) || [];
+    history.unshift(historyOrder); // Prepend new order
+    localStorage.setItem('order_history', JSON.stringify(history));
 }
 
 // Select a location: updates form and visual 3D pin highlight
@@ -1127,6 +1201,7 @@ function initGlobeScene() {
 
     const container = document.querySelector('.globe-canvas-wrapper');
     const canvas = document.getElementById('globe-canvas');
+    if (!container || !canvas) return;
 
     // 1. Scene setup
     globeScene = new THREE.Scene();
@@ -1381,7 +1456,367 @@ function animateGlobe() {
 function onGlobeResize() {
     if (!isGlobeInitialized) return;
     const container = document.querySelector('.globe-canvas-wrapper');
+    if (!container) return;
     globeCamera.aspect = container.clientWidth / container.clientHeight;
     globeCamera.updateProjectionMatrix();
     globeRenderer.setSize(container.clientWidth, container.clientHeight);
+}
+
+
+/* ==========================================================================
+   SPA ROUTER, AUTHENTICATION AND ORDER HISTORY LOGIC
+   ========================================================================== */
+
+// 1. Router Logic
+function setupRouter() {
+    window.addEventListener('hashchange', handleRouting);
+    
+    // Initial page load trigger
+    const initialScreen = document.getElementById('loading-screen');
+    setTimeout(() => {
+        initialScreen.classList.add('fade-out');
+        handleRouting();
+    }, 2400); // Give users time to appreciate initial loading
+}
+
+function handleRouting() {
+    let hash = window.location.hash || '#/home';
+    
+    // Split sub-anchors (like #/home#features)
+    let mainHash = hash;
+    let subAnchor = '';
+    if (hash.includes('#', 2)) {
+        const parts = hash.substring(2).split('#');
+        mainHash = '#/' + parts[0];
+        subAnchor = parts[1];
+    }
+    
+    const pageId = ROUTES[mainHash];
+    if (!pageId) {
+        // Fallback
+        window.location.hash = '#/home';
+        return;
+    }
+
+    // Trigger page swap transition loader (if switching pages)
+    const activePage = document.querySelector('.spa-page.active');
+    if (activePage && activePage.id === pageId) {
+        // No loader transition needed, just scroll
+        handleScrollTransition(subAnchor);
+        return;
+    }
+
+    showSPAChangeLoader(true);
+    
+    setTimeout(() => {
+        // Hide other pages
+        document.querySelectorAll('.spa-page').forEach(page => {
+            page.classList.remove('active');
+        });
+        
+        // Show active page
+        const newPage = document.getElementById(pageId);
+        if (newPage) newPage.classList.add('active');
+        
+        // Update nav links active states
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+            const linkHash = link.getAttribute('href');
+            if (linkHash === mainHash || linkHash.startsWith(mainHash + '#')) {
+                link.classList.add('active');
+            }
+        });
+        
+        // Render specific page databases
+        if (pageId === 'page-menu') {
+            filterAndSearchMenu();
+        } else if (pageId === 'page-history') {
+            renderOrderHistory();
+        }
+        
+        handleScrollTransition(subAnchor);
+        
+        // Fade out transition loader
+        showSPAChangeLoader(false);
+    }, 700);
+}
+
+function handleScrollTransition(subAnchor) {
+    if (subAnchor) {
+        setTimeout(() => {
+            const targetEl = document.getElementById(subAnchor);
+            if (targetEl) {
+                targetEl.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 100);
+    } else {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+}
+
+function showSPAChangeLoader(show) {
+    const loader = document.getElementById('loading-screen');
+    const quoteEl = document.getElementById('loader-quote');
+    const barEl = loader.querySelector('.loader-bar');
+    
+    if (show) {
+        loader.classList.remove('fade-out');
+        if (barEl) {
+            barEl.style.animation = 'none';
+            barEl.offsetHeight; // trigger reflow
+            barEl.style.animation = 'loadBarAnimation 0.8s cubic-bezier(0.15, 0.85, 0.2, 1) forwards';
+        }
+        if (quoteEl) {
+            const quote = LOADER_QUOTES[Math.floor(Math.random() * LOADER_QUOTES.length)];
+            quoteEl.textContent = quote;
+        }
+    } else {
+        loader.classList.add('fade-out');
+    }
+}
+
+
+// 2. Authentication UI & Form Logic
+function setupAuthListeners() {
+    const authCard = document.getElementById('auth-card');
+    const slideToSignup = document.getElementById('slide-to-signup');
+    const slideToSignin = document.getElementById('slide-to-signin');
+    const goToSignup = document.getElementById('go-to-signup');
+    const goToSignin = document.getElementById('go-to-signin');
+    
+    if (authCard) {
+        slideToSignup.addEventListener('click', () => authCard.classList.add('right-panel-active'));
+        slideToSignin.addEventListener('click', () => authCard.classList.remove('right-panel-active'));
+        goToSignup.addEventListener('click', () => authCard.classList.add('right-panel-active'));
+        goToSignin.addEventListener('click', () => authCard.classList.remove('right-panel-active'));
+    }
+
+    // Password strength evaluator
+    const signupPassInput = document.getElementById('signup-password');
+    if (signupPassInput) {
+        signupPassInput.addEventListener('input', (e) => {
+            const password = e.target.value;
+            let score = 0;
+            let statusText = "Too short";
+            let color = "var(--error-color)";
+            
+            if (password.length >= 8) {
+                score += 1;
+                if (/[0-9]/.test(password)) score += 1;
+                if (/[A-Z]/.test(password)) score += 1;
+                if (/[^A-Za-z0-9]/.test(password)) score += 1;
+                
+                if (score === 1) {
+                    statusText = "Weak";
+                    color = "var(--error-color)";
+                } else if (score === 2) {
+                    statusText = "Fair";
+                    color = "#f57c00";
+                } else if (score === 3) {
+                    statusText = "Good";
+                    color = "#fbc02d";
+                } else if (score >= 4) {
+                    statusText = "Strong";
+                    color = "var(--success-color)";
+                }
+            }
+            
+            const barFill = document.getElementById('password-strength-bar');
+            const textEl = document.getElementById('password-strength-text');
+            if (barFill && textEl) {
+                const widthPct = password.length >= 8 ? (score / 4) * 100 : 10;
+                barFill.style.width = `${widthPct}%`;
+                barFill.style.backgroundColor = color;
+                textEl.textContent = statusText;
+                textEl.style.color = color;
+            }
+        });
+    }
+
+    // Submit signup form
+    const signUpForm = document.getElementById('sign-up-form');
+    if (signUpForm) {
+        signUpForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value.trim();
+            const email = document.getElementById('signup-email').value.trim().toLowerCase();
+            const password = document.getElementById('signup-password').value;
+
+            if (password.length < 8) {
+                shakeForm(signUpForm);
+                alert('Password must be at least 8 characters long.');
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem('coffee_club_users')) || [];
+            if (users.find(u => u.email === email)) {
+                shakeForm(signUpForm);
+                alert('This email address is already registered in our Club!');
+                return;
+            }
+
+            const newUser = { name, email, password };
+            users.push(newUser);
+            localStorage.setItem('coffee_club_users', JSON.stringify(users));
+
+            loginUser(newUser);
+            signUpForm.reset();
+            window.location.hash = '#/home';
+        });
+    }
+
+    // Submit signin form
+    const signInForm = document.getElementById('sign-in-form');
+    if (signInForm) {
+        signInForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signin-email').value.trim().toLowerCase();
+            const password = document.getElementById('signin-password').value;
+
+            let users = JSON.parse(localStorage.getItem('coffee_club_users')) || [];
+            const matchedUser = users.find(u => u.email === email && u.password === password);
+
+            if (matchedUser) {
+                loginUser(matchedUser);
+                signInForm.reset();
+                window.location.hash = '#/home';
+            } else {
+                shakeForm(signInForm);
+                alert('Invalid email credentials or incorrect password.');
+            }
+        });
+    }
+}
+
+function shakeForm(form) {
+    form.classList.add('auth-form-shake');
+    setTimeout(() => form.classList.remove('auth-form-shake'), 450);
+}
+
+function loginUser(user) {
+    currentUser = user;
+    localStorage.setItem('current_user', JSON.stringify(user));
+    updateProfileWidget();
+}
+
+function logoutUser() {
+    currentUser = null;
+    localStorage.removeItem('current_user');
+    updateProfileWidget();
+    window.location.hash = '#/home';
+}
+
+function updateProfileWidget() {
+    const widget = document.getElementById('profile-widget');
+    if (!widget) return;
+
+    if (currentUser) {
+        const initial = currentUser.name.charAt(0).toUpperCase();
+        widget.innerHTML = `
+            <div class="profile-widget-user">
+                <div class="profile-avatar">${initial}</div>
+                <span>${currentUser.name.split(' ')[0]}</span>
+                <button class="profile-logout-btn" id="logout-btn" aria-label="Sign Out">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+        `;
+        document.getElementById('logout-btn').addEventListener('click', logoutUser);
+        
+        // Autopopulate checkout form name
+        const chkName = document.getElementById('user-name');
+        if (chkName) chkName.value = currentUser.name;
+    } else {
+        widget.innerHTML = `
+            <a href="#/auth" class="profile-btn" id="profile-btn" aria-label="User Account">
+                <i class="fa-regular fa-user"></i>
+            </a>
+        `;
+    }
+}
+
+
+// 3. Order History Page Rendering & Reorder Logic
+function renderOrderHistory() {
+    const listContainer = document.getElementById('history-list-container');
+    if (!listContainer) return;
+
+    const history = JSON.parse(localStorage.getItem('order_history')) || [];
+
+    if (history.length === 0) {
+        listContainer.innerHTML = `
+            <div class="empty-history-state">
+                <i class="fa-solid fa-mug-hot"></i>
+                <h4>No Orders Found</h4>
+                <p>You haven't placed any orders yet. Head to the menu to craft your first brew!</p>
+                <a href="#/menu" class="btn btn-primary">Explore Menu</a>
+            </div>
+        `;
+        return;
+    }
+
+    listContainer.innerHTML = '';
+    history.forEach(order => {
+        const card = document.createElement('div');
+        card.className = 'history-card';
+        
+        let itemsHtml = '';
+        order.items.forEach(item => {
+            itemsHtml += `
+                <div class="history-item-row">
+                    <div>
+                        <span class="history-item-name">${item.name} x${item.quantity}</span>
+                        ${item.customText ? `<div class="history-item-customs">${item.customText}</div>` : ''}
+                    </div>
+                    <span class="history-item-price">${order.symbol}${item.price.toFixed(2)}</span>
+                </div>
+            `;
+        });
+
+        card.innerHTML = `
+            <div class="history-card-header">
+                <div class="history-order-info">
+                    <h4>Order ID: ${order.id}</h4>
+                    <span class="history-date">${order.date}</span>
+                </div>
+                <span class="history-status-badge status-completed">Completed</span>
+            </div>
+            <div class="history-card-body">
+                <div class="history-items-detail">
+                    ${itemsHtml}
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px;">
+                    <i class="fa-solid fa-location-dot" style="margin-right: 4px; color: var(--accent-color);"></i>
+                    Pickup: <strong>${order.locationName}</strong> (${order.type})
+                </p>
+            </div>
+            <div class="history-card-footer">
+                <div>
+                    <span class="history-total-label">Total Amount:</span>
+                    <span class="history-total-price">${order.symbol}${order.total.toFixed(2)}</span>
+                </div>
+                <button class="btn btn-secondary reorder-btn" data-order-index="${history.indexOf(order)}">
+                    <i class="fa-solid fa-rotate-right"></i> Reorder
+                </button>
+            </div>
+        `;
+        listContainer.appendChild(card);
+    });
+
+    // Reorder Click binders
+    listContainer.querySelectorAll('.reorder-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const index = parseInt(e.currentTarget.dataset.orderIndex);
+            if (history[index] && history[index].cartBackup) {
+                reorderCartItems(history[index].cartBackup);
+            }
+        });
+    });
+}
+
+function reorderCartItems(cartItemsBackup) {
+    // Clear and restore cart state
+    cart = JSON.parse(JSON.stringify(cartItemsBackup));
+    updateCartUI();
+    toggleCartDrawer(true);
 }
