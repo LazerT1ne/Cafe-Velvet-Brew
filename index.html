@@ -16,18 +16,42 @@
 </head>
 <body>
 
+    <!-- Initial Loading Screen & Transitions -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader-content">
+            <svg class="coffee-loader" viewBox="0 0 100 100">
+                <!-- Coffee cup outline -->
+                <path d="M30 40 h40 v20 a20 20 0 0 1 -40 0 z" fill="none" stroke="currentColor" stroke-width="4"/>
+                <!-- Cup handle -->
+                <path d="M70 45 h6 a4 4 0 0 1 4 4 v6 a4 4 0 0 1 -4 4 h-6" fill="none" stroke="currentColor" stroke-width="4"/>
+                <!-- Coffee level top line -->
+                <path d="M28 35 h44" fill="none" stroke="currentColor" stroke-width="4"/>
+                <!-- Rising steam lines -->
+                <path class="steam steam-1" d="M38 28 Q 41 22, 38 16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                <path class="steam steam-2" d="M50 28 Q 53 20, 50 12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                <path class="steam steam-3" d="M62 28 Q 65 22, 62 16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                <!-- Dripping coffee particle -->
+                <circle class="drip" cx="50" cy="65" r="3" fill="currentColor"/>
+            </svg>
+            <div class="loader-bar-container">
+                <div class="loader-bar"></div>
+            </div>
+            <div class="loader-quote" id="loader-quote">Grinding premium beans...</div>
+        </div>
+    </div>
+
     <!-- Header Navigation -->
     <header class="header">
         <div class="container header-container">
-            <a href="#" class="logo" id="header-logo">
+            <a href="#/home" class="logo" id="header-logo">
                 <span class="logo-accent">Velvet</span> Brew
             </a>
             <nav class="nav" aria-label="Main Navigation">
-                <a href="#hero" class="nav-link active">Home</a>
-                <a href="#features" class="nav-link">About</a>
-                <a href="#menu" class="nav-link">Menu</a>
-                <a href="#locations" class="nav-link">Locations</a>
-                <a href="#footer" class="nav-link">Contact</a>
+                <a href="#/home" class="nav-link active" data-page="home">Home</a>
+                <a href="#/home#features" class="nav-link" data-page="home" data-scroll="features">About</a>
+                <a href="#/menu" class="nav-link" data-page="menu">Menu</a>
+                <a href="#/home#locations" class="nav-link" data-page="home" data-scroll="locations">Locations</a>
+                <a href="#/history" class="nav-link" data-page="history">History</a>
             </nav>
             <div class="header-actions">
                 <button class="theme-toggle" id="theme-toggle-btn" aria-label="Toggle Theme">
@@ -37,151 +61,281 @@
                     <i class="fa-solid fa-bag-shopping"></i>
                     <span class="cart-badge" id="cart-count">0</span>
                 </button>
+                <!-- Profile Status widget -->
+                <div class="profile-widget" id="profile-widget">
+                    <a href="#/auth" class="profile-btn" id="profile-btn" aria-label="User Account">
+                        <i class="fa-regular fa-user"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </header>
 
+    <!-- SPA Pages Wrapper -->
     <main>
-        <!-- Hero Section -->
-        <section id="hero" class="hero">
-            <div class="hero-overlay"></div>
-            <div class="container hero-container">
-                <div class="hero-content">
-                    <span class="hero-subtitle">Specialty Coffee Network</span>
-                    <h1 class="hero-title">Crafting Coffee, Inspiring Mornings</h1>
-                    <p class="hero-description">Connecting Europe and North America through small-batch roasted specialty coffee, artisan pastries, and warm minimalist spaces.</p>
-                    <div class="hero-buttons">
-                        <a href="#menu" class="btn btn-primary">Order Now</a>
-                        <a href="#locations" class="btn btn-secondary">Explore Locations</a>
-                    </div>
-                </div>
-            </div>
-            <div class="hero-scroll-indicator">
-                <span class="mouse-scroll"></span>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section id="features" class="features">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">The Velvet Brew Standards</h2>
-                    <p class="section-subtitle">Attention to detail from bean sourcing to your first sip</p>
-                </div>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon-wrapper">
-                            <i class="fa-solid fa-mug-hot"></i>
+        <!-- 1. HOME PAGE -->
+        <div id="page-home" class="spa-page active">
+            <!-- Hero Section -->
+            <section id="hero" class="hero">
+                <div class="hero-overlay"></div>
+                <div class="container hero-container">
+                    <div class="hero-content">
+                        <span class="hero-subtitle">Specialty Coffee Network</span>
+                        <h1 class="hero-title">Crafting Coffee, Inspiring Mornings</h1>
+                        <p class="hero-description">Connecting Europe and North America through small-batch roasted specialty coffee, artisan pastries, and warm minimalist spaces.</p>
+                        <div class="hero-buttons">
+                            <a href="#/menu" class="btn btn-primary">Order Now</a>
+                            <a href="#/home#locations" class="btn btn-secondary">Explore Locations</a>
                         </div>
-                        <h3>Specialty Beans</h3>
-                        <p>100% single-origin Arabica, sourced ethically and roasted weekly for optimal fruitiness and body.</p>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon-wrapper">
-                            <i class="fa-solid fa-seedling"></i>
+                </div>
+                <div class="hero-scroll-indicator">
+                    <span class="mouse-scroll"></span>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section id="features" class="features">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">The Velvet Brew Standards</h2>
+                        <p class="section-subtitle">Attention to detail from bean sourcing to your first sip</p>
+                    </div>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon-wrapper">
+                                <i class="fa-solid fa-mug-hot"></i>
+                            </div>
+                            <h3>Specialty Beans</h3>
+                            <p>100% single-origin Arabica, sourced ethically and roasted weekly for optimal fruitiness and body.</p>
                         </div>
-                        <h3>Plant-Based Friendly</h3>
-                        <p>Organic cow milk and house-crafted oat, almond, and coconut alternative milks.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon-wrapper">
-                            <i class="fa-solid fa-kitchen-set"></i>
+                        <div class="feature-card">
+                            <div class="feature-icon-wrapper">
+                                <i class="fa-solid fa-seedling"></i>
+                            </div>
+                            <h3>Plant-Based Friendly</h3>
+                            <p>Organic cow milk and house-crafted oat, almond, and coconut alternative milks.</p>
                         </div>
-                        <h3>In-House Bakery</h3>
-                        <p>Butter croissants and signature fruit tarts baked fresh on-site every morning.</p>
+                        <div class="feature-card">
+                            <div class="feature-icon-wrapper">
+                                <i class="fa-solid fa-kitchen-set"></i>
+                            </div>
+                            <h3>In-House Bakery</h3>
+                            <p>Butter croissants and signature fruit tarts baked fresh on-site every morning.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Menu Section -->
-        <section id="menu" class="menu-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Our Menu</h2>
-                    <p class="section-subtitle">Select and fully customize your favorite craft drinks and bakery items</p>
-                </div>
-
-                <!-- Menu Controls -->
-                <div class="menu-controls">
-                    <div class="search-box">
-                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                        <input type="text" id="menu-search" placeholder="Search coffee, tea, pastries...">
+            <!-- Global Locations Network -->
+            <section id="locations" class="locations-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Our Global Network</h2>
+                        <p class="section-subtitle">From cozy spots in London to coffee labs in Los Angeles</p>
                     </div>
-                    <div class="filter-tabs" id="filter-tabs">
-                        <button class="filter-tab active" data-category="all">All</button>
-                        <button class="filter-tab" data-category="drinks">Drinks</button>
-                        <button class="filter-tab" data-category="bakery">Bakery</button>
-                        <button class="filter-tab" data-category="desserts">Desserts</button>
-                    </div>
-                </div>
-
-                <!-- Menu Grid -->
-                <div class="menu-grid" id="menu-grid">
-                    <!-- Rendered dynamically in app.js -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Global Locations Network -->
-        <section id="locations" class="locations-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Our Global Network</h2>
-                    <p class="section-subtitle">From cozy spots in London to coffee labs in Los Angeles</p>
-                </div>
-                <div class="locations-grid">
-                    <div class="location-info-card">
-                        <h3>Europe</h3>
-                        <div class="location-item">
-                            <div class="loc-bullet"></div>
-                            <div>
-                                <strong>London, Soho</strong>
-                                <p>42 Wardour St, Soho, London W1D 6PX</p>
+                    <div class="locations-grid">
+                        <div class="location-info-card">
+                            <h3>Europe</h3>
+                            <div class="location-item">
+                                <div class="loc-bullet"></div>
+                                <div>
+                                    <strong>London, Soho</strong>
+                                    <p>42 Wardour St, Soho, London W1D 6PX</p>
+                                </div>
+                            </div>
+                            <div class="location-item">
+                                <div class="loc-bullet"></div>
+                                <div>
+                                    <strong>Paris, Le Marais</strong>
+                                    <p>18 Rue des Rosiers, 75004 Paris</p>
+                                </div>
+                            </div>
+                            <div class="location-item">
+                                <div class="loc-bullet"></div>
+                                <div>
+                                    <strong>Berlin, Mitte</strong>
+                                    <p>Rosenthaler Str. 36, 10178 Berlin</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="location-item">
-                            <div class="loc-bullet"></div>
-                            <div>
-                                <strong>Paris, Le Marais</strong>
-                                <p>18 Rue des Rosiers, 75004 Paris</p>
+                        <div class="location-info-card">
+                            <h3>North America</h3>
+                            <div class="location-item">
+                                <div class="loc-bullet"></div>
+                                <div>
+                                    <strong>New York, SoHo</strong>
+                                    <p>120 Prince St, New York, NY 10012</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="location-item">
-                            <div class="loc-bullet"></div>
-                            <div>
-                                <strong>Berlin, Mitte</strong>
-                                <p>Rosenthaler Str. 36, 10178 Berlin</p>
+                            <div class="location-item">
+                                <div class="loc-bullet"></div>
+                                <div>
+                                    <strong>Los Angeles, Venice</strong>
+                                    <p>1600 Boardwalk, Venice, CA 90291</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="location-info-card">
-                        <h3>North America</h3>
-                        <div class="location-item">
-                            <div class="loc-bullet"></div>
-                            <div>
-                                <strong>New York, SoHo</strong>
-                                <p>120 Prince St, New York, NY 10012</p>
-                            </div>
+                    <div class="globe-intro-banner">
+                        <div class="globe-intro-text">
+                            <h4>Order Online and Pick Up Anywhere</h4>
+                            <p>Using our dynamic checkout, select your nearest European or American outlet on our interactive 3D Globe for immediate in-shop dining or priority takeaway.</p>
                         </div>
-                        <div class="location-item">
-                            <div class="loc-bullet"></div>
-                            <div>
-                                <strong>Los Angeles, Venice</strong>
-                                <p>1600 Boardwalk, Venice, CA 90291</p>
+                        <i class="fa-solid fa-earth-americas globe-intro-icon"></i>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 2. MENU PAGE -->
+        <div id="page-menu" class="spa-page">
+            <section class="menu-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Our Menu</h2>
+                        <p class="section-subtitle">Select and fully customize your favorite craft drinks and bakery items</p>
+                    </div>
+
+                    <!-- Menu Controls -->
+                    <div class="menu-controls">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <input type="text" id="menu-search" placeholder="Search coffee, tea, pastries...">
+                        </div>
+                        <div class="filter-tabs" id="filter-tabs">
+                            <button class="filter-tab active" data-category="all">All</button>
+                            <button class="filter-tab" data-category="drinks">Drinks</button>
+                            <button class="filter-tab" data-category="bakery">Bakery</button>
+                            <button class="filter-tab" data-category="desserts">Desserts</button>
+                        </div>
+                    </div>
+
+                    <!-- Menu Grid -->
+                    <div class="menu-grid" id="menu-grid">
+                        <!-- Rendered dynamically in app.js -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 3. AUTH PAGE (Login/Register) -->
+        <div id="page-auth" class="spa-page">
+            <section class="auth-section">
+                <div class="container auth-container-wrapper">
+                    <div class="auth-card" id="auth-card">
+                        <!-- Sign In Panel -->
+                        <div class="auth-panel sign-in-panel">
+                            <form id="sign-in-form" class="auth-form">
+                                <h2>Welcome Back</h2>
+                                <p class="auth-subtitle">Log in to check your order history & loyalty points</p>
+                                
+                                <div class="form-group">
+                                    <label for="signin-email" class="form-label">Email Address</label>
+                                    <div class="input-with-icon">
+                                        <i class="fa-solid fa-envelope input-icon"></i>
+                                        <input type="email" id="signin-email" placeholder="alex@example.com" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="signin-password" class="form-label">Password</label>
+                                    <div class="input-with-icon">
+                                        <i class="fa-solid fa-lock input-icon"></i>
+                                        <input type="password" id="signin-password" placeholder="••••••••" required>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary w-100">Sign In</button>
+                                
+                                <div class="auth-footer-link">
+                                    <span>Don't have an account?</span>
+                                    <button type="button" class="btn-link" id="go-to-signup">Sign Up</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Sign Up Panel -->
+                        <div class="auth-panel sign-up-panel">
+                            <form id="sign-up-form" class="auth-form">
+                                <h2>Create Account</h2>
+                                <p class="auth-subtitle">Join the Velvet Coffee Club for premium discounts</p>
+                                
+                                <div class="form-group">
+                                    <label for="signup-name" class="form-label">Full Name</label>
+                                    <div class="input-with-icon">
+                                        <i class="fa-solid fa-user input-icon"></i>
+                                        <input type="text" id="signup-name" placeholder="Alex Smirnov" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="signup-email" class="form-label">Email Address</label>
+                                    <div class="input-with-icon">
+                                        <i class="fa-solid fa-envelope input-icon"></i>
+                                        <input type="email" id="signup-email" placeholder="alex@example.com" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="signup-password" class="form-label">Password</label>
+                                    <div class="input-with-icon">
+                                        <i class="fa-solid fa-lock input-icon"></i>
+                                        <input type="password" id="signup-password" placeholder="••••••••" required>
+                                    </div>
+                                    <div class="password-strength-container">
+                                        <div class="strength-bar-bg">
+                                            <div class="strength-bar-fill" id="password-strength-bar"></div>
+                                        </div>
+                                        <div class="strength-label">Strength: <span id="password-strength-text">Too short</span></div>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary w-100">Register</button>
+                                
+                                <div class="auth-footer-link">
+                                    <span>Already have an account?</span>
+                                    <button type="button" class="btn-link" id="go-to-signin">Sign In</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Sliding Info Panels Overlay (desktop only) -->
+                        <div class="auth-overlay-container" id="auth-overlay-container">
+                            <div class="auth-overlay">
+                                <div class="auth-overlay-panel auth-overlay-left-info">
+                                    <h3>Join the Club!</h3>
+                                    <p>Enter your details and start ordering the finest single-origin brews.</p>
+                                    <button type="button" class="btn btn-secondary btn-ghost" id="slide-to-signup">Sign Up</button>
+                                </div>
+                                <div class="auth-overlay-panel auth-overlay-right-info">
+                                    <h3>Welcome Back!</h3>
+                                    <p>Login to your account to review your personal history of orders.</p>
+                                    <button type="button" class="btn btn-secondary btn-ghost" id="slide-to-signin">Sign In</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="globe-intro-banner">
-                    <div class="globe-intro-text">
-                        <h4>Order Online and Pick Up Anywhere</h4>
-                        <p>Using our dynamic checkout, select your nearest European or American outlet on our interactive 3D Globe for immediate in-shop dining or priority takeaway.</p>
+            </section>
+        </div>
+
+        <!-- 4. HISTORY PAGE -->
+        <div id="page-history" class="spa-page">
+            <section class="history-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-title">Your Order History</h2>
+                        <p class="section-subtitle">Track and reorder your favorite signature brews</p>
                     </div>
-                    <i class="fa-solid fa-earth-americas globe-intro-icon"></i>
+                    <div class="history-list-wrapper">
+                        <div class="history-list" id="history-list-container">
+                            <!-- Populated dynamically via app.js -->
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
     </main>
 
     <!-- Slide-out Cart Drawer -->
@@ -200,7 +354,7 @@
                 <div class="empty-cart-message">
                     <i class="fa-solid fa-basket-shopping"></i>
                     <p>Your basket is currently empty</p>
-                    <a href="#menu" class="btn btn-primary btn-sm" id="empty-cart-cta">View Our Menu</a>
+                    <a href="#/menu" class="btn btn-primary btn-sm" id="empty-cart-cta">View Our Menu</a>
                 </div>
             </div>
 
@@ -630,7 +784,7 @@
     <footer id="footer" class="footer">
         <div class="container footer-grid">
             <div class="footer-brand">
-                <a href="#" class="logo footer-logo">
+                <a href="#/home" class="logo footer-logo">
                     <span class="logo-accent">Velvet</span> Brew
                 </a>
                 <p>Establishing places where high-end craft roasting meets effortless architectural minimalist comfort.</p>
@@ -643,10 +797,11 @@
             <div class="footer-links">
                 <h4>Navigation</h4>
                 <ul>
-                    <li><a href="#hero">Home</a></li>
-                    <li><a href="#features">About</a></li>
-                    <li><a href="#menu">Menu</a></li>
-                    <li><a href="#locations">Locations</a></li>
+                    <li><a href="#/home">Home</a></li>
+                    <li><a href="#/home#features">About</a></li>
+                    <li><a href="#/menu">Menu</a></li>
+                    <li><a href="#/home#locations">Locations</a></li>
+                    <li><a href="#/history">History</a></li>
                 </ul>
             </div>
             <div class="footer-hours">
